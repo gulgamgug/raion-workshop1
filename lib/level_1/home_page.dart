@@ -69,10 +69,17 @@ class HomePage extends StatelessWidget {
                     Row(
                       spacing: 20,
                       children: [
-                        ProductCard(title: 'TUlsi', description: 'Huauwahhaa'),
                         ProductCard(
-                          title: 'Mawar',
-                          description: 'Mawar dari Belanda',
+                          title: 'Sawit',
+                          description:
+                              'Didatangkan langsung dari tanah Sumatera',
+                          img_asset: 'lib/res/sawit.jpg',
+                        ),
+                        ProductCard(
+                          title: 'Cabai',
+                          description:
+                              'Cabai rawit yang ditumbuhkan secara organik',
+                          img_asset: 'lib/res/cabai.jpg',
                         ),
                       ],
                     ),
@@ -80,12 +87,16 @@ class HomePage extends StatelessWidget {
                       spacing: 20,
                       children: [
                         ProductCard(
-                          title: 'Durian Belanda',
-                          description: 'Sirsak',
+                          title: 'Tebu',
+                          description:
+                              'Tebu asli yang belum diolah bagi yang membutuhkan saja',
+                          img_asset: 'lib/res/tebu.jpg',
                         ),
                         ProductCard(
-                          title: 'Sirsak',
-                          description: 'Durian Belanda',
+                          title: 'Ubi Cilembu',
+                          description:
+                              'Ubi khas Cilembu yang dikenal dengan rasa manis dan madunya yang hanya keluar ketika dipanggang dengan suhu tertentu',
+                          img_asset: 'lib/res/ubi.jpg',
                         ),
                       ],
                     ),
@@ -103,10 +114,12 @@ class HomePage extends StatelessWidget {
 class ProductCard extends StatelessWidget {
   final String title;
   final String description;
+  final String img_asset;
   const ProductCard({
     super.key,
     required this.title,
     required this.description,
+    required this.img_asset,
   });
 
   @override
@@ -120,8 +133,11 @@ class ProductCard extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ProductDetails(title: title, description: description),
+                  builder: (context) => ProductDetails(
+                    title: title,
+                    description: description,
+                    img_asset: img_asset,
+                  ),
                 ),
               );
             },
@@ -129,6 +145,10 @@ class ProductCard extends StatelessWidget {
               width: 165,
               height: 165,
               decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(img_asset),
+                  fit: BoxFit.cover,
+                ),
                 color: Color(0xffd9d9d9),
                 borderRadius: BorderRadius.circular(10),
               ),
