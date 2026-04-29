@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:workshop_1/level_1/product_details.dart';
 import 'package:workshop_1/level_1/banner_carousel.dart';
+import 'package:workshop_1/level_1/fav_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -152,31 +153,40 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetails(
-                    title: title,
-                    description: description,
-                    imgAsset: imgAsset,
+          Stack(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProductDetails(
+                        title: title,
+                        description: description,
+                        imgAsset: imgAsset,
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  width: 165,
+                  height: 165,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(imgAsset),
+                      fit: BoxFit.cover,
+                    ),
+                    color: Color(0xffd9d9d9),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-              );
-            },
-            child: Container(
-              width: 165,
-              height: 165,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(imgAsset),
-                  fit: BoxFit.cover,
-                ),
-                color: Color(0xffd9d9d9),
-                borderRadius: BorderRadius.circular(30),
               ),
-            ),
+              const Positioned(
+                top: 12,
+                right: 12,
+                child: FavButton(),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 5),
@@ -196,7 +206,6 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Icon(Icons.favorite_border),
               ],
             ),
           ),
