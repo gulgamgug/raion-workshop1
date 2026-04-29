@@ -23,7 +23,7 @@ class _BannerCarouselState extends State<BannerCarousel> {
     return Column(
       children: [
         ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(10),
+          borderRadius: BorderRadiusGeometry.circular(30),
           child: SizedBox(
             height: 160,
             width: .infinity,

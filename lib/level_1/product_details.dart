@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class ProductDetails extends StatelessWidget {
   final String title;
   final String description;
-  final String img_asset;
+  final String imgAsset;
 
   const ProductDetails({
     super.key,
     required this.title,
     required this.description,
-    required this.img_asset,
+    required this.imgAsset,
   });
 
   @override
@@ -31,13 +31,12 @@ class ProductDetails extends StatelessWidget {
             width: .infinity,
             height: 319,
             decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage(img_asset), fit: .cover),
+              image: DecorationImage(image: AssetImage(imgAsset), fit: .cover),
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(10)),
               color: Color(0xFFD9D9D9),
             ),
           ),
           Expanded(
-            //AKU PENGEN INI MULAINYA DARI SISI KIRI LAYAR DENGAN PADDING, BUKAN
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 32),
               child: Column(

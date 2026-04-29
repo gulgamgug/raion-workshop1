@@ -52,10 +52,22 @@ class HomePage extends StatelessWidget {
                             child: Row(
                               spacing: 7,
                               children: [
-                                CategoryCard(title: "Fruits"),
-                                CategoryCard(title: "Grains"),
-                                CategoryCard(title: "Herbs"),
-                                CategoryCard(title: "Herbs"),
+                                CategoryCard(
+                                  title: "Fruits",
+                                  imgAsset: 'lib/res/fruits.jpg',
+                                ),
+                                CategoryCard(
+                                  title: "Grains",
+                                  imgAsset: 'lib/res/grains.jpg',
+                                ),
+                                CategoryCard(
+                                  title: "Herbs",
+                                  imgAsset: 'lib/res/herbs.jpg',
+                                ),
+                                CategoryCard(
+                                  title: "Roots",
+                                  imgAsset: 'lib/res/ubi.jpg',
+                                ),
                               ],
                             ),
                           ),
@@ -73,13 +85,17 @@ class HomePage extends StatelessWidget {
                           title: 'Sawit',
                           description:
                               'Didatangkan langsung dari tanah Sumatera',
-                          img_asset: 'lib/res/sawit.jpg',
+                          imgAsset: 'lib/res/sawit.jpg',
+                          starRating: '4,2',
+                          totalReview: '67',
                         ),
                         ProductCard(
                           title: 'Cabai',
                           description:
                               'Cabai rawit yang ditumbuhkan secara organik',
-                          img_asset: 'lib/res/cabai.jpg',
+                          imgAsset: 'lib/res/cabai.jpg',
+                          starRating: '5,0',
+                          totalReview: '537',
                         ),
                       ],
                     ),
@@ -90,13 +106,17 @@ class HomePage extends StatelessWidget {
                           title: 'Tebu',
                           description:
                               'Tebu asli yang belum diolah bagi yang membutuhkan saja',
-                          img_asset: 'lib/res/tebu.jpg',
+                          imgAsset: 'lib/res/tebu.jpg',
+                          starRating: '4,6',
+                          totalReview: '293',
                         ),
                         ProductCard(
                           title: 'Ubi Cilembu',
                           description:
                               'Ubi khas Cilembu yang dikenal dengan rasa manis dan madunya yang hanya keluar ketika dipanggang dengan suhu tertentu',
-                          img_asset: 'lib/res/ubi.jpg',
+                          imgAsset: 'lib/res/ubi.jpg',
+                          starRating: '4,8',
+                          totalReview: '676',
                         ),
                       ],
                     ),
@@ -114,12 +134,16 @@ class HomePage extends StatelessWidget {
 class ProductCard extends StatelessWidget {
   final String title;
   final String description;
-  final String img_asset;
+  final String starRating;
+  final String totalReview;
+  final String imgAsset;
   const ProductCard({
     super.key,
     required this.title,
     required this.description,
-    required this.img_asset,
+    required this.starRating,
+    required this.imgAsset,
+    required this.totalReview,
   });
 
   @override
@@ -136,7 +160,7 @@ class ProductCard extends StatelessWidget {
                   builder: (context) => ProductDetails(
                     title: title,
                     description: description,
-                    img_asset: img_asset,
+                    imgAsset: imgAsset,
                   ),
                 ),
               );
@@ -146,11 +170,11 @@ class ProductCard extends StatelessWidget {
               height: 165,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(img_asset),
+                  image: AssetImage(imgAsset),
                   fit: BoxFit.cover,
                 ),
                 color: Color(0xffd9d9d9),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(30),
               ),
             ),
           ),
@@ -176,8 +200,22 @@ class ProductCard extends StatelessWidget {
               ],
             ),
           ),
+          Row(
+            children: [
+              Icon(Icons.star, color: Color(0xffffdb58)),
+              Text(starRating, style: TextStyle(fontWeight: .w900)),
+              SizedBox(width: 5),
+              Text(
+                "($totalReview)",
+                style: TextStyle(color: Color(0xff939393), fontWeight: .w700),
+              ),
+            ],
+          ),
           Text(
             description,
+            maxLines: 2,
+            softWrap: false,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: .w600,
               fontSize: 14,
@@ -192,7 +230,8 @@ class ProductCard extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final String title;
-  const CategoryCard({super.key, required this.title});
+  final String imgAsset;
+  const CategoryCard({super.key, required this.title, required this.imgAsset});
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +245,11 @@ class CategoryCard extends StatelessWidget {
       child: Row(
         spacing: 8,
         children: [
-          CircleAvatar(backgroundColor: Color(0xFFc4c4c4), radius: 25),
+          CircleAvatar(
+            foregroundImage: AssetImage(imgAsset),
+            backgroundColor: Color(0xFFc4c4c4),
+            radius: 25,
+          ),
           Padding(
             padding: .only(right: 20),
             child: Text(title, style: TextStyle(fontWeight: .w700)),
@@ -231,11 +274,11 @@ class _SearchFieldState extends State<SearchField> {
       decoration: InputDecoration(
         prefixIcon: Icon(Icons.search),
         hintText: "Search...",
-        fillColor: Color(0xffd9d9d9),
+        fillColor: Color(0xffffffff),
         filled: true,
         border: OutlineInputBorder(
-          borderSide: .none,
-          borderRadius: .circular(10),
+          borderSide: BorderSide(color: Color(0xffededed), width: 0.5),
+          borderRadius: .circular(30),
         ),
       ),
     );
