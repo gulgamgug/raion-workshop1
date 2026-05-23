@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:workshop_1/level_1/product_details.dart';
 import 'package:workshop_1/level_1/banner_carousel.dart';
 import 'package:workshop_1/level_1/fav_button.dart';
+import 'package:workshop_1/providers/product_provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,9 +24,9 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: SearchField(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: SearchField(), //SEARCH FIELD
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -35,24 +37,26 @@ class HomePage extends StatelessWidget {
                   spacing: 24,
                   children: [
                     const BannerCarousel(),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Column(
-                        crossAxisAlignment: .start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: const Text(
+                          const Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Text(
                               'Categories',
-                              style: TextStyle(fontWeight: .w700, fontSize: 16),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           SingleChildScrollView(
-                            scrollDirection: .horizontal,
+                            scrollDirection: Axis.horizontal,
                             child: Row(
                               spacing: 7,
-                              children: [
+                              children: const [
                                 CategoryCard(
                                   title: "Fruits",
                                   imgAsset: 'lib/res/fruits.jpg',
@@ -77,49 +81,68 @@ class HomePage extends StatelessWidget {
                     ),
                     const Text(
                       "Browse Products",
-                      style: TextStyle(fontWeight: .w700, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
                     ),
-                    Row(
-                      spacing: 20,
-                      children: [
-                        ProductCard(
-                          title: 'Sawit',
-                          description:
-                              'Didatangkan langsung dari tanah Sumatera',
-                          imgAsset: 'lib/res/sawit.jpg',
-                          starRating: '4,2',
-                          totalReview: '67',
-                        ),
-                        ProductCard(
-                          title: 'Cabai',
-                          description:
-                              'Cabai rawit yang ditumbuhkan secara organik',
-                          imgAsset: 'lib/res/cabai.jpg',
-                          starRating: '5,0',
-                          totalReview: '537',
-                        ),
-                      ],
-                    ),
-                    Row(
-                      spacing: 20,
-                      children: [
-                        ProductCard(
-                          title: 'Tebu',
-                          description:
-                              'Tebu asli yang belum diolah bagi yang membutuhkan saja',
-                          imgAsset: 'lib/res/tebu.jpg',
-                          starRating: '4,6',
-                          totalReview: '293',
-                        ),
-                        ProductCard(
-                          title: 'Ubi Cilembu',
-                          description:
-                              'Ubi khas Cilembu yang dikenal dengan rasa manis dan madunya yang hanya keluar ketika dipanggang dengan suhu tertentu',
-                          imgAsset: 'lib/res/ubi.jpg',
-                          starRating: '4,8',
-                          totalReview: '676',
-                        ),
-                      ],
+                    Consumer<ProductProvider>(
+                      builder: (context, productProvider, child) {
+                        final products = productProvider.filteredProducts;
+
+                        if (products.isEmpty) {
+                          return const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: Text(
+                                "No products found",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+
+                        List<Widget> productRows = [];
+                        for (int i = 0; i < products.length; i += 2) {
+                          List<Widget> rowChildren = [];
+                          rowChildren.add(
+                            ProductCard(
+                              title: products[i].title,
+                              description: products[i].description,
+                              imgAsset: products[i].imgAsset,
+                              starRating: products[i].starRating,
+                              totalReview: products[i].totalReview,
+                            ),
+                          );
+
+                          if (i + 1 < products.length) {
+                            rowChildren.add(
+                              ProductCard(
+                                title: products[i + 1].title,
+                                description: products[i + 1].description,
+                                imgAsset: products[i + 1].imgAsset,
+                                starRating: products[i + 1].starRating,
+                                totalReview: products[i + 1].totalReview,
+                              ),
+                            );
+                          } else {
+                            rowChildren.add(const Expanded(child: SizedBox()));
+                          }
+
+                          productRows.add(
+                            Row(
+                              spacing: 20,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: rowChildren,
+                            ),
+                          );
+                        }
+
+                        return Column(spacing: 20, children: productRows);
+                      },
                     ),
                   ],
                 ),
@@ -176,22 +199,22 @@ class ProductCard extends StatelessWidget {
                       image: AssetImage(imgAsset),
                       fit: BoxFit.cover,
                     ),
-                    color: Color(0xffd9d9d9),
+                    color: const Color(0xffd9d9d9),
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
               ),
-              const Positioned(
+              Positioned(
                 top: 12,
                 right: 12,
-                child: FavButton(),
+                child: FavButton(productTitle: title),
               ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15, bottom: 5),
             child: Row(
-              mainAxisAlignment: .spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Text(
@@ -199,8 +222,8 @@ class ProductCard extends StatelessWidget {
                     maxLines: 1,
                     softWrap: false,
                     overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      fontWeight: .w700,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
                       fontSize: 20,
                       color: Color(0xff505050),
                     ),
@@ -211,12 +234,18 @@ class ProductCard extends StatelessWidget {
           ),
           Row(
             children: [
-              Icon(Icons.star, color: Color(0xffffdb58)),
-              Text(starRating, style: TextStyle(fontWeight: .w900)),
-              SizedBox(width: 5),
+              const Icon(Icons.star, color: Color(0xffffdb58)),
+              Text(
+                starRating,
+                style: const TextStyle(fontWeight: FontWeight.w900),
+              ),
+              const SizedBox(width: 5),
               Text(
                 "($totalReview)",
-                style: TextStyle(color: Color(0xff939393), fontWeight: .w700),
+                style: const TextStyle(
+                  color: Color(0xff939393),
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ],
           ),
@@ -225,8 +254,8 @@ class ProductCard extends StatelessWidget {
             maxLines: 2,
             softWrap: false,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontWeight: .w600,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
               fontSize: 14,
               color: Colors.grey,
             ),
@@ -245,23 +274,26 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: .all(4),
+      padding: const EdgeInsets.all(4),
       height: 56,
       decoration: BoxDecoration(
-        color: Color(0xffd9d9d9),
-        borderRadius: .circular(50),
+        color: const Color(0xffd9d9d9),
+        borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
         spacing: 8,
         children: [
           CircleAvatar(
             foregroundImage: AssetImage(imgAsset),
-            backgroundColor: Color(0xFFc4c4c4),
+            backgroundColor: const Color(0xFFc4c4c4),
             radius: 25,
           ),
           Padding(
-            padding: .only(right: 20),
-            child: Text(title, style: TextStyle(fontWeight: .w700)),
+            padding: const EdgeInsets.only(right: 20),
+            child: Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
           ),
         ],
       ),
@@ -269,25 +301,23 @@ class CategoryCard extends StatelessWidget {
   }
 }
 
-class SearchField extends StatefulWidget {
+class SearchField extends StatelessWidget {
   const SearchField({super.key});
 
   @override
-  State<SearchField> createState() => _SearchFieldState();
-}
-
-class _SearchFieldState extends State<SearchField> {
-  @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: (value) {
+        context.read<ProductProvider>().updateSearchQuery(value);
+      },
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
+        prefixIcon: const Icon(Icons.search),
         hintText: "Search...",
-        fillColor: Color(0xffffffff),
+        fillColor: const Color(0xffffffff),
         filled: true,
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xffededed), width: 0.5),
-          borderRadius: .circular(30),
+          borderSide: const BorderSide(color: Color(0xffededed), width: 0.5),
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );

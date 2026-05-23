@@ -45,10 +45,10 @@ class ProductDetails extends StatelessWidget {
             ),
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: FavButton(),
+            padding: const EdgeInsets.only(right: 16),
+            child: FavButton(productTitle: title),
           ),
         ],
       ),
