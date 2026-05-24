@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:workshop_1/favorite_provider.dart';
+import 'package:workshop_1/providers/favorite_provider.dart';
 import 'package:workshop_1/providers/product_provider.dart';
 import 'package:workshop_1/level_1/home_page.dart';
 

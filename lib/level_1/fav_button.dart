@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:workshop_1/favorite_provider.dart';
+import 'package:workshop_1/providers/favorite_provider.dart';
 
 class FavButton extends StatelessWidget {
   final String productTitle;
